@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scripts
+data:
+  locustfile.py: |
+    import time
+    from locust import HttpUser, task
+
+    class QuickstartUser(HttpUser):
+        @task
+        def carbon(self):
+            self.client.get("/")
+            factors = self.client.get("/api/regions/emissions-factors")
+            recommendations = self.client.post("/api/footprint")
+#            if factors.status_code == 200:
+#              print(f"Response: {factors.json()}")
+#            if recommendations.status_code == 200:
+#              print(f"Response: {recommendations.json()}")
+
+#        def on_start(self):
+#            self.client.post("/login", json={"username":"foo", "password":"bar"})

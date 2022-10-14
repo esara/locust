@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: locust-worker
+    app: locust-worker
+  name: locust-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      role: locust-worker
+      app: locust-worker
+  template:
+    metadata:
+      labels:
+        role: locust-worker
+        app: locust-worker
+    spec:
+      containers:
+      - image: locustio/locust
+        imagePullPolicy: Always
+        name: worker
+        args: ["--worker", "--master-host=locust-master"]
+        volumeMounts:
+          - mountPath: /home/locust
+            name: locust-scripts
+      volumes:
+      - name: locust-scripts
+        configMap:
+          name: scripts

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scripts
+data:
+  locustfile.py: |
+    import time
+    from locust import HttpUser, task
+
+    class QuickstartUser(HttpUser):
+        @task
+        def fight(self):
+            fighters = self.client.get("/api/fights/randomfighters")
+            if fighters.status_code == 200:
+              winner = self.client.post("/api/fights", json=fighters.json())
+#              if winner.status_code == 200:
+#                print(f"Response: {winner.json()}")
+
+#        def on_start(self):
+#            self.client.post("/login", json={"username":"foo", "password":"bar"})
